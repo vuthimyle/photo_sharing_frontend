@@ -1,25 +1,27 @@
-import React from 'react';
-import { Card, CardContent, Typography, Button, Box } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
-import models from '../../modelData/models';
+import React from "react";
+import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import models from "../../lib/fetchModelData";
+import fetchModel from "../../lib/fetchModelData";
+import { useState, useEffect } from "react";
 
 function UserDetail() {
   const { userId } = useParams();
-   const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        fetchModel(`https://rvfqlk-8081.csb.app/api/user/${userId}`)
-            .then((data) => {
-                setUser(data);
-            })
-            .catch((error) => {
-                console.error("Error loading user detail:", error);
-            });
-    }, [userId]);
+  useEffect(() => {
+    fetchModel(`https://rvfqlk-8080.csb.app/api/user/${userId}`)
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        console.error("Error loading user detail:", error);
+      });
+  }, [userId]);
 
-    if (!user) {
-        return <Typography>Loading...</Typography>
-    }
+  if (!user) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <Card>

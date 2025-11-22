@@ -1,23 +1,24 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   CardContent,
   CardMedia,
   Typography,
-  Box
-} from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
-import models from '../../modelData/models';
-
+  Divider,
+} from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import models from "../../lib/fetchModelData";
+import fetchModel from "../../lib/fetchModelData";
+import { useState, useEffect } from "react";
 
 function UserPhotos() {
   const { userId } = useParams();
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
-    fetchModel(`https://rvfqlk-8081.csb.app/api/photo/photosOfUser/${userId}`)
+    fetchModel(`https://rvfqlk-8080.csb.app/api/photo/photosOfUser/${userId}`)
       .then((data) => {
-        console.log('Photos data:', data); 
+        console.log("Photos data:", data);
         setPhotos(data);
       })
       .catch((error) => {
@@ -31,12 +32,12 @@ function UserPhotos() {
 
   const formatDateTime = (dateTime) => {
     const date = new Date(dateTime);
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -49,7 +50,7 @@ function UserPhotos() {
         <Card key={photo._id} style={{ marginBottom: "20px" }}>
           <CardMedia
             component="img"
-            image={`/images/${photo.file_name}`}  
+            image={`/images/${photo.file_name}`}
             alt="User photo"
             style={{ maxHeight: "500px", objectFit: "contain" }}
           />
@@ -66,16 +67,27 @@ function UserPhotos() {
 
             {photo.comments && photo.comments.length > 0 ? (
               photo.comments.map((comment) => (
-                <div key={comment._id} style={{ marginBottom: "15px", paddingLeft: "10px", borderLeft: "3px solid #e0e0e0" }}>
+                <div
+                  key={comment._id}
+                  style={{
+                    marginBottom: "15px",
+                    paddingLeft: "10px",
+                    borderLeft: "3px solid #e0e0e0",
+                  }}
+                >
                   <Typography variant="body2">
                     <Link
                       to={`/users/${comment.user._id}`}
-                      style={{ textDecoration: 'none', fontWeight: 'bold', color: '#1976d2' }}
+                      style={{
+                        textDecoration: "none",
+                        fontWeight: "bold",
+                        color: "#1976d2",
+                      }}
                     >
                       {comment.user.first_name} {comment.user.last_name}
                     </Link>
-                    {' - '}
-                    <span style={{ fontSize: '0.85em', color: '#666' }}>
+                    {" - "}
+                    <span style={{ fontSize: "0.85em", color: "#666" }}>
                       {formatDateTime(comment.date_time)}
                     </span>
                   </Typography>

@@ -1,20 +1,22 @@
-import React from 'react';
-import { List, ListItem, ListItemText, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
-import models from '../../modelData/models';
+import React from "react";
+import { List, ListItem, ListItemText, Divider } from "@mui/material";
+import { Link } from "react-router-dom";
+import models from "../../lib/fetchModelData";
+import fetchModel from "../../lib/fetchModelData";
+import { useState, useEffect } from "react";
 
 function UserList() {
-   const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetchModel("https://rvfqlk-8081.csb.app/api/user/list")
+    fetchModel("https://rvfqlk-8080.csb.app/api/user/list")
       .then((data) => {
         setUsers(data);
       })
       .catch((error) => {
         console.error("Error loading user list: ", error);
-      })
-  }, [])
+      });
+  }, []);
 
   return (
     <List component="nav">
